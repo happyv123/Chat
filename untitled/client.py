@@ -1,8 +1,8 @@
 import socket
 
 while True:
-    inp = input("Enter msg: ")
     sock = socket.socket()
+    inp = input("Enter msg: ")
     sock.connect(("192.168.0.9", 8080))
     if inp == '':
         inp =' '
