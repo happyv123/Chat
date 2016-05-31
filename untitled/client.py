@@ -8,4 +8,3 @@ while True:
     sock.send(inp.encode("utf-8"))
     request = sock.recv(1024)
     print(request.decode("utf-8"))
-    sock.close()
