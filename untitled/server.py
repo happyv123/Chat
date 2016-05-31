@@ -17,6 +17,6 @@ while True:
             print('{} : {}'.format(client_socket.getpeername(), request))
         sys.exit()
     else:
-        client_socket.close()
+        pass
 
 sock.close()
