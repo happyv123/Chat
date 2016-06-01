@@ -2,7 +2,7 @@ import os
 import socket
 import sys
 
-o = open("file.txt", 'a')
+o = open("file.txt", 'w')
 sock = socket.socket()
 sock.bind(("", 8080))
 sock.listen(10)
@@ -17,16 +17,17 @@ try:
         child_pid = os.fork()
         if child_pid == 0:
             while True:
+                o = open("file.txt", 'a')
                 request = client_socket.recv(1024)
-                if request.decode('utf-8') == '':
-                    client_socket.close()
+                if request.decode('utf-8') == "__disc__":
                     print('User {} has left'.format(tcpre[address]))
+                    client_socket.close()
                     sys.exit()
                 client_socket.send(request.upper())
                 request_str = request.decode("utf-8")
                 print('{} : {}'.format(tcpre[address], request_str))
                 o.write('{} : {}'.format(tcpre[address], request_str) + '\n')
-
+                o.close()
         else:
             client_socket.close()
 except KeyboardInterrupt:
@@ -34,5 +35,5 @@ except KeyboardInterrupt:
     o.close()
 except ConnectionResetError:
     print('User {} has left'.format(tcpre[address]))
-    sock.close()
-    o.close()
+    client_socket.close()
+    sys.exit()
