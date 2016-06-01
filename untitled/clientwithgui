@@ -1,0 +1,40 @@
+import socket,sys,tkinter
+def sendlog():
+        sock.send(str(login.get()).encode("utf-8"))
+        com()
+        #chat()
+sock = socket.socket()
+sock.connect(("5.128.64.60", 5050))
+r=tkinter.Tk()
+login=tkinter.StringVar()
+login.set('qwerty')
+r.title("Chat")
+r.geometry('200x100')
+r.resizable(width=False,height=False)
+l1=tkinter.Label(text="Enter login").pack(side="left")
+e1=tkinter.Entry(r,textvariable = login).pack(side="right")
+b1=tkinter.Button(r,text="Enter",command=sendlog).pack(side="bottom")
+
+
+
+def com():
+    try:
+        while True:
+            inp = input("Enter msg: ")
+            if inp == '':
+                inp =' '
+            sock.send(inp.encode("utf-8"))
+            request = sock.recv(1024)
+            print(request.decode("utf-8"))
+    except KeyboardInterrupt:
+        sock.send(b'__disc__')
+        sock.close()
+def chat():
+    nr = tkinter.Toplevel(r)
+    nr.geometry('500x500')
+    nr.pack()
+    l1.delete()
+    b1.delete()
+    e1.delete()
+    
+r.mainloop()
